@@ -37,8 +37,37 @@ jobs:
       - name: Check flake8 for changed files
         run: python -m flake8 feature_engine/imputation/categorical.py tests/test_imputation/test_categorical_imputer_numpydoc.py
 
-      - name: Check mypy across project
-        run: python -m mypy feature_engine
+      - name: Check Black formatting for the regression test
+        if: always()
+        run: python -m black --check tests/test_imputation/test_categorical_imputer_numpydoc.py
+
+      - name: Check isort for the regression test
+        if: always()
+        run: python -m isort --check-only tests/test_imputation/test_categorical_imputer_numpydoc.py
+
+      - name: Compare mypy errors with unchanged fork main
+        if: always()
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin main
+          git worktree add --detach /tmp/feature-engine-issue1059-main origin/main
+          set +e
+          python -m mypy feature_engine > /tmp/mypy-contribution.log 2>&1
+          contribution_status=$?
+          ( cd /tmp/feature-engine-issue1059-main && python -m mypy feature_engine ) > /tmp/mypy-main.log 2>&1
+          main_status=$?
+          set -e
+          echo "Contribution mypy exit status: $contribution_status"
+          echo "Main mypy exit status: $main_status"
+          grep -E '^[^:]+:[0-9]+: error:' /tmp/mypy-contribution.log > /tmp/errors-contribution.txt || true
+          grep -E '^[^:]+:[0-9]+: error:' /tmp/mypy-main.log > /tmp/errors-main.txt || true
+          echo "Contribution errors:"
+          cat /tmp/errors-contribution.txt
+          echo "Main errors:"
+          cat /tmp/errors-main.txt
+          test "$contribution_status" -eq "$main_status"
+          diff -u /tmp/errors-main.txt /tmp/errors-contribution.txt
 
       - name: Build Sphinx documentation without warnings
+        if: always()
         run: python -m sphinx -W -b html docs .sprint3-html
