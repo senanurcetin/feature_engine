@@ -39,11 +39,11 @@ jobs:
 
       - name: Check Black formatting for the regression test
         if: always()
-        run: python -m black --check tests/test_imputation/test_categorical_imputer_numpydoc.py
+        run: python -m black --check --diff tests/test_imputation/test_categorical_imputer_numpydoc.py
 
       - name: Check isort for the regression test
         if: always()
-        run: python -m isort --check-only tests/test_imputation/test_categorical_imputer_numpydoc.py
+        run: python -m isort --check-only --diff tests/test_imputation/test_categorical_imputer_numpydoc.py
 
       - name: Compare mypy errors with unchanged fork main
         if: always()
