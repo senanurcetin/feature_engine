@@ -6,10 +6,8 @@ from pathlib import Path
 
 import pytest
 
-
 SOURCE = (
-    Path(__file__).resolve().parents[2]
-    / "feature_engine/imputation/categorical.py"
+    Path(__file__).resolve().parents[2] / "feature_engine/imputation/categorical.py"
 )
 
 
@@ -48,9 +46,5 @@ def test_categorical_imputer_numpydoc_parameter_headings(member, parameters):
     doc = ast.get_docstring(node)
     assert doc is not None
     for parameter in parameters:
-        assert re.search(
-            rf"^\s*{parameter} : \S+", doc, flags=re.MULTILINE
-        ), parameter
-        assert not re.search(
-            rf"^\s*{parameter}:", doc, flags=re.MULTILINE
-        ), parameter
+        assert re.search(rf"^\s*{parameter} : \S+", doc, flags=re.MULTILINE), parameter
+        assert not re.search(rf"^\s*{parameter}:", doc, flags=re.MULTILINE), parameter
