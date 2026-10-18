@@ -68,15 +68,15 @@ class CategoricalImputer(BaseImputer):
 
     Parameters
     ----------
-    imputation_method: str, default='missing'
+    imputation_method : str, default='missing'
         Desired method of imputation. Can be 'frequent' for frequent category imputation
         or 'missing' to impute with an arbitrary value.
 
-    fill_value: str, int, float, default='Missing'
+    fill_value : str, int, float, default='Missing'
         User-defined value to replace missing data. Only used when
         `imputation_method='missing'`.
 
-    variables: list, default=None
+    variables : list, default=None
         The list of categorical variables that will be imputed. If None, the
         imputer will find and transform all variables of type object or categorical by
         default. You can also make the transformer accept numerical variables, see the
@@ -84,13 +84,13 @@ class CategoricalImputer(BaseImputer):
 
     {return_empty}
 
-    return_object: bool, default=False
+    return_object : bool, default=False
         If working with numerical variables cast as object, decide
         whether to return the variables as numeric or re-cast them as object.
         Note that pandas will re-cast them automatically as numeric after the
         transformation with the mode or with an arbitrary number.
 
-    ignore_format: bool, default=False
+    ignore_format : bool, default=False
         Whether the format in which the categorical variables are cast should be
         ignored. If False, the imputer will automatically select variables of type
         object or categorical, or check that the variables entered by the user are of
@@ -168,10 +168,10 @@ class CategoricalImputer(BaseImputer):
 
         Parameters
         ----------
-        X: pandas dataframe of shape = [n_samples, n_features]
+        X : pandas dataframe of shape = [n_samples, n_features]
             The training dataset.
 
-        y: pandas Series, default=None
+        y : pandas Series, default=None
             y is not needed in this imputation. You can pass None or y.
         """
 
